@@ -1,0 +1,89 @@
+@import "../../base";
+
+.chat {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+
+  border-left: $border-primary;
+
+
+  @media only screen and (max-width: $width-middle) {
+    grid-row-start: 1;
+    grid-column: 1/-1;
+
+  }
+}
+
+.invisible {
+  @media only screen and (max-width: $width-middle) {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  background-color: $color-primary;
+  padding: .5rem 1rem;
+  border-bottom: $border-primary;
+
+  @media only screen and (max-width: $width-middle) {
+    padding: 1.5rem 2rem;
+    justify-content: center;
+    position: relative;
+
+    &__button{
+      color: $color-primary-dark;
+      font-size: 3rem;
+      position: absolute;
+      left: 2rem;
+      transition: all .2s;
+      &:hover{
+        left: 2.2rem;
+      }
+    }
+
+  }
+  &__name {
+    font-size: 2.5rem;
+    margin-left: 1rem;
+  }
+
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow-y: auto;
+
+
+}
+
+.write-field {
+  width: 100%;
+  padding: 3rem 2rem;
+  background-color: $color-primary;
+  border-top: $border-primary;
+  position: relative;
+  input {
+    width: 100%;
+    border-radius: 2rem;
+    border: $border-primary;
+    padding: 1.5rem;
+    color: $font-primary;
+
+    @media only screen and (max-width: $width-middle) {
+    }
+
+    &:focus-visible {
+      outline: none;
+      color: $font-dark;
+    }
+  }
+}
+
+
