@@ -4,6 +4,7 @@ import {chatsSlice} from "./slices/chatsSlice";
 import {selectedChatSlice} from "./slices/selectedChatSlice";
 import {sideBarSlice} from "./slices/sideBarSlice";
 import {messagesSlice} from "./slices/messagesSlice";
+import userSlice from "./slices/userSlice";
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         sideBar: sideBarSlice.reducer,
         messages: messagesSlice.reducer,
         selectedChat: selectedChatSlice.reducer,
+        user: userSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

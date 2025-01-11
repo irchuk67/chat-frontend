@@ -3,14 +3,28 @@ import './App.scss';
 import Sidebar from "./components/sidebar/sidebar";
 import {useSelector} from "react-redux";
 import Chat from "./components/chat/chat";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+import LogIn from "./components/login/logIn";
 
 const App = () => {
-    const selectedChat = useSelector((state) => state.selectedChat.chat)
     return (
-        <div className="app">
-            <Sidebar/>
-            <Chat/>
-        </div>
+        <BrowserRouter>
+            <div className="app">
+                <Routes>
+                    <Route path={'/login'} element={<LogIn/>}/>
+                    <Route
+                        path="/chat"
+                        element={
+                            <ProtectedRoute
+                                element={<><Sidebar /><Chat /></>}
+                            />
+                        }
+                    />
+                </Routes>
+            </div>
+        </BrowserRouter>
+
     );
 }
 
