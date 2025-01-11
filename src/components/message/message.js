@@ -1,31 +1,32 @@
 import React from "react";
+import user from '../../img/user.jpg';
 import './message.scss';
 
 const transformDateTime = (dateTime) => {
-    const [dateValues, timeValues] = dateTime.split(' ');
-    const [month, day, year] = dateValues.split('/');
-    const [hours, minutes, seconds] = timeValues.split(':');
+    const date = new Date(dateTime);
 
-    const date = new Date(+year, month - 1, +day, +hours, +minutes, +seconds);
-    const longEnUSFormatter = new Intl.DateTimeFormat('en-US', {
-        day:    'numeric',
-        month:  'numeric',
-        year:   'numeric',
-        hour:   '2-digit',
-        minute: '2-digit',
-    });
-    return longEnUSFormatter.format(date)
+    const options = {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+    };
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
-const Message = ({message, companion}) => {
-    const dateTime = transformDateTime(message.sendDatetime);
+const Message = ({message}) => {
+    console.log(message)
+    const dateTime = transformDateTime(message.date);
     return(
         <div className={`message`}>
-            {!message.isMyMessage ? <img src={companion} className={'img'} alt={'Companion Image'}/> : null}
+            {(message.messageType === "RECEIVED") ? <img src={user} className={'img'} alt={'Companion Image'}/> : null}
             <div className="message__content">
                 <div className={'message__notification'}>
                     <p className="message__text">
-                        {message.text}
+                        {message.content}
                     </p>
                 </div>
                 <p className={'message__date'}>

@@ -1,15 +1,41 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import userChats from '../../userChats.json';
+import {getAllChats} from "../../api/chat";
 
 const initialState = {
-    chats: userChats.chats
+    loading: false,
+    data: [],
+    error: "",
 }
+
+export const fetchChats = createAsyncThunk(
+    "chats/fetchChats",
+    async (token) => {
+        return  await getAllChats(token);
+    }
+)
 export const chatsSlice = createSlice({
     name: "chats",
     initialState,
     reducers: {
-        loadChats: (state, action) => {
-            state.chats = action.payload;
-        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchChats.pending, state => {
+            state.loading = true;
+            state.data = [];
+            state.error = "";
+        })
+
+        builder.addCase(fetchChats.fulfilled, (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+            state.error = ""
+        })
+
+        builder.addCase(fetchChats.rejected, (state, action) => {
+            state.loading = false;
+            state.data = [];
+            state.error = action.error.message ? action.error.message : "error";
+        })
     }
 })

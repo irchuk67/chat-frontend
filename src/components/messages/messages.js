@@ -1,26 +1,22 @@
-import React, { useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Message from "../message/message";
 import {connect, useSelector} from "react-redux";
+import user from '../../img/user.jpg';
 import './messages.scss';
+import {getChatMessages} from "../../api/chat";
 
 const Messages = (props) => {
-    const selectedChat = useSelector(state => state.selectedChat);
-    const messagesList = useSelector(state => state.messages);
-    const prevMessages = useRef(messagesList.messages);
+    const selectedChat = useSelector(state => state.selectedChat.chat);
+    const [messagesList, setMessagesList] = useState([]);
+
     useEffect(() => {
-        prevMessages.current = messagesList.messages;
-    })
+        getChatMessages(selectedChat.id, localStorage.getItem('token'))
+            .then(response => setMessagesList(response))
+    }, [selectedChat]);
 
-    const {chatId, companionImage} = selectedChat;
 
-    if((window.sessionStorage.getItem(selectedChat.chatId) === null) ||  prevMessages.current !== messagesList.messages){
-        // props.getMessageHistory(selectedChat.chatId);
-        window.sessionStorage.setItem(selectedChat.chatId, JSON.stringify(messagesList.messages));
-    }
 
-    const messages = JSON.parse(window.sessionStorage.getItem(chatId));
-
-    return messages.map(message => {
+    return messagesList.map(message => {
         const MyMessage = () => {
             return(
                 <div className={'my-message'}>
@@ -30,13 +26,13 @@ const Messages = (props) => {
         const CompanionMessage = () => {
             return(
                 <div className={'not-my-message'}>
-                    <Message message={message}  companion={companionImage}/>
+                    <Message message={message}/>
                 </div>
             )
         }
 
         return (
-            message.isMyMessage ?  <MyMessage key={message.sendDateTime}/> : <CompanionMessage key={message.sendDateTime}/>
+            (message.messageType === "SENT") ?  <MyMessage key={message.sendDateTime}/> : <CompanionMessage key={message.sendDateTime}/>
         )
     });
 

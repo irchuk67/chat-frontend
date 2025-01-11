@@ -6,6 +6,7 @@ import Chat from "./components/chat/chat";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import LogIn from "./components/login/logIn";
+import ChatWrapper from "./components/chat-wrapper/chatWrapper";
 
 const App = () => {
     return (
@@ -17,7 +18,7 @@ const App = () => {
                         path="/chat"
                         element={
                             <ProtectedRoute
-                                element={<><Sidebar /><Chat /></>}
+                                element={<ChatWrapper/>}
                             />
                         }
                     />

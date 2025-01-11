@@ -1,11 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {open as openSideBar} from "../../redux/slices/sideBarSlice";
 import {selectChat} from "../../redux/slices/selectedChatSlice";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Messages from "../messages/messages";
-import {addMessage} from "../../redux/slices/messagesSlice";
 import {randomJoke} from "../../chucknorisAPI";
 import './chat.scss';
+import user from '../../img/user.jpg';
+import {getChatMessages} from "../../api/chat";
 
 const transformDate = (date) => {
     const howToWriteNumber = (number) => {
@@ -55,6 +56,7 @@ const Chat = () => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
    const isSideBarOpen = useSelector(state => state.sideBar.isOpen);
    const dispatch = useDispatch();
+
     const onBackClick = () => {
         dispatch(openSideBar());
         dispatch(selectChat({chat: {}}));
@@ -81,33 +83,33 @@ const Chat = () => {
         e.preventDefault();
 
         if (messageText) {
-            sendMessageFunc(dispatch(addMessage), messageText, selectedChat.chatId, true, false, true);
-            setMessageText('')
+            // sendMessageFunc(dispatch(addMessage), messageText, selectedChat.chatId, true, false, true);
+            // setMessageText('')
         }
 
         setTimeout(() => randomJoke().then(res => {
             if (res.value) {
-                sendMessageFunc(dispatch(addMessage), res.value, selectedChat.chatId, false, true, false)
+                // sendMessageFunc(dispatch(addMessage), res.value, selectedChat.chatId, false, true, false)
             }
 
 
         }), Math.random() * 5000 + 10000)
     }
 
-    console.log(selectedChat.chatId)
-    if (selectedChat.chatId ) {
-        const {companionName, companionImage, companionIsActive} = selectedChat;
+    console.log(selectedChat.id)
+    if (selectedChat.id) {
+        const {firstName, lastName, latestMessage} = selectedChat;
 
         return (
             <div className={className}>
                 <div className={'user'}>
                     {generateButton()}
                     <div className={'user__img'}>
-                        <img src={companionImage} alt="Companion" className="img"/>
+                        <img src={user} alt="Companion" className="img"/>
                         {/*{companionIsActive ? <CheckCircleOutlined className={'is-active'}/> : null}*/}
                     </div>
                     <p className="user__name">
-                        {companionName}
+                        {firstName + " " + (lastName ? lastName : "")}
                     </p>
                 </div>
                 <div className={"messages"}>

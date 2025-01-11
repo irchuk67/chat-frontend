@@ -1,13 +1,14 @@
 import React, {useEffect, useRef} from 'react';
 import './chatItem.scss'
 import {connect} from "react-redux";
+import user from '../../img/user.jpg';
 
 const dateToNecessaryFormat = (currentDate) => {
     let date = new Date(currentDate);
     const longEnUSFormatter = new Intl.DateTimeFormat('en-US', {
-        year:  'numeric',
+        year: 'numeric',
         month: 'long',
-        day:   'numeric',
+        day: 'numeric',
     });
     return longEnUSFormatter.format(date);
 }
@@ -54,34 +55,42 @@ const ChatItem = ({chat, onSelect, selectedChat, sentMessages}) => {
     //     }
     //     return null
     // }
+    console.log(chat)
+    const {firstName, lastName, latestMessage} = chat;
 
-    return(
+    return (
         // <div className={`chat-item ${hasNewMessage()}`}
         //      onClick={onSelect}
         // >
         <div className={'chat-item'} onClick={onSelect}>
             {/*{prevNumberOfSentMessages.current < sentMessages ? <audio autoPlay={true} src={sound()}/> : null }*/}
             <div>
-                <img src={chat.companionImage} alt="Companion" className="img"/>
-                {/*{chat.companionIsActive ? <CheckCircleOutlined className={'is-active'}/> : null}*/}
+                <img src={user} alt="Companion" className="img"/>
             </div>
             <div className="chat-item__content">
                 <p className="chat-item__content--user-name">
-                    {chat.companionName}
+                    {firstName + " " + (lastName ? lastName : "")}
                 </p>
-                <p className="chat-item__content--last-message">
-                    {chat.latestMessage.text}
-                </p>
+                {
+                    latestMessage &&
+                    <p className="chat-item__content--last-message">
+                        {latestMessage.content}
+                    </p>
+                }
             </div>
-            <p className={'chat-item__last-date'}>
-                {dateToNecessaryFormat(chat.latestMessage.date)}
-            </p>
+            {
+                latestMessage &&
+                <p className={'chat-item__last-date'}>
+                    {dateToNecessaryFormat(latestMessage.date)}
+                </p>
+            }
+
         </div>
     )
 }
 
 const mapStateToProps = state => {
-    return{
+    return {
         selectedChat: state.selectedChat,
         sentMessages: state.sentMessages,
         hadPlayed: state.hadPlayed
