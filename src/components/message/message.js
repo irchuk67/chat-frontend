@@ -18,7 +18,6 @@ const transformDateTime = (dateTime) => {
 }
 
 const Message = ({message}) => {
-    console.log(message)
     const dateTime = transformDateTime(message.date);
     return(
         <div className={`message`}>

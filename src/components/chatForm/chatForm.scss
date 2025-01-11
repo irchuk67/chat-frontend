@@ -1,0 +1,50 @@
+@import "src/base";
+.form{
+  &__title{
+    font-size: 3rem;
+    flood-color: $font-dark;
+  }
+
+  &__field{
+    display: flex;
+    flex-direction: column;
+    &--label{
+      font-size: 1.2rem;
+    }
+
+    &--input{
+      border-radius: .5rem;
+      border-color: $font-dark;
+      color: $font-primary;
+
+      &:active, &:focus, &:focus-visible{
+        color: $font-dark;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+    }
+  }
+
+  &__buttons{
+    display: flex;
+    justify-content: center;
+  }
+
+  &__btn{
+    padding: 1rem 1.5rem;
+    border-radius: .5rem;
+    border: none;
+    &--submit{
+      background-color: $green;
+      &:hover {
+        background-color: #548253;
+      }
+    }
+
+    &--cancel{
+      background-color: $font-light;
+      &:hover{
+        background-color: $font-primary;
+      }
+    }
+  }
+}

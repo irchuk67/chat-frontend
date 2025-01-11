@@ -10,8 +10,8 @@ const initialState = {
 
 export const fetchChats = createAsyncThunk(
     "chats/fetchChats",
-    async (token) => {
-        return  await getAllChats(token);
+    async ({token, searchTerm}) => {
+        return  await getAllChats(token, searchTerm);
     }
 )
 export const chatsSlice = createSlice({

@@ -1,13 +1,33 @@
 @import "../../base";
 
 .chats{
-
   overflow-y: auto;
   scrollbar-gutter: var(--gutter, auto);
+
+  &__heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__add-btn{
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: .5rem;
+    margin-right: 1rem;
+    background-color: $font-primary;
+    transition: all, .2s;
+
+    &:hover{
+      background-color: $font-dark;
+      color: $font-light;
+    }
+  }
+
   & h5{
     color: $blue;
     font-size: 1.5rem;
     font-weight: 300;
-    padding: 1.5rem;
+    padding: 1rem;
   }
 }

@@ -5,13 +5,13 @@ import {useRef} from "react";
 import {useSelector} from "react-redux";
 import './sidebar.scss';
 
-const Sidebar = () => {
+const Sidebar = ({shouldRerenderMessages}) => {
     const isSidebarOpen = useSelector(state => state.sideBar.isOpen);
     return (
         <div className="sidebar">
             <Account />
             <SearchBar/>
-            <ChatList />
+            <ChatList shouldRerenderMessages={shouldRerenderMessages}/>
         </div>
     )
 }

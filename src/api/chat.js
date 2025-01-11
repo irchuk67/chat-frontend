@@ -16,16 +16,49 @@ const submitUser = (sessionId, token) => ChatApi.post("/users",
         }
     }).then(response => response.data);
 
-const getAllChats = (token) => ChatApi.get("/chats", {
+const getAllChats = (token, searchTerm) => ChatApi.get("/chats", {
     headers: {
         Authorization: `Bearer ${token}`
+    },
+    params: {
+        search: searchTerm
     }
 }).then(response => response.data);
 
+const getChat = (chatId, token) => ChatApi.get(`/chats/${chatId}`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+const addChat = (token, firstName, lastName) => ChatApi.post("/chats",
+    {
+        firstName,
+        lastName
+    },
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+).then(response => response.data);
+
+const updateChat = (chatId, token, firstName, lastName) => ChatApi.put(`/chats/${chatId}`,
+    {
+        firstName,
+        lastName
+    },
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+)
 const getChatMessages = (chatId, token) => ChatApi.get(`/chats/${chatId}/messages`, {
     headers: {
         Authorization: `Bearer ${token}`
     }
 }).then(response => response.data);
 
-export {submitUser, getAllChats, getChatMessages};
+export {submitUser, getAllChats, getChatMessages, addChat, updateChat, getChat};

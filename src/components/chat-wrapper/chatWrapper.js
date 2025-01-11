@@ -71,7 +71,7 @@ const ChatWrapper = (props) => {
         } else {
             return (
                 <>
-                    <Sidebar />
+                    <Sidebar shouldRerenderMessages={shouldRerenderMessages}/>
                     <Chat shouldRerenderMessages={shouldRerenderMessages}
                           handleRenderMessages={handleRenderMessages} />
                 </>

@@ -1,7 +1,8 @@
 import React, {useEffect, useRef} from 'react';
-import './chatItem.scss'
 import {connect} from "react-redux";
 import user from '../../img/user.jpg';
+import deleteIcon from '../../img/delete.svg';
+import './chatItem.scss'
 
 const dateToNecessaryFormat = (currentDate) => {
     let date = new Date(currentDate);
@@ -15,47 +16,6 @@ const dateToNecessaryFormat = (currentDate) => {
 
 
 const ChatItem = ({chat, onSelect, selectedChat, sentMessages}) => {
-    // const prevNumberOfSentMessages = useRef(0);
-    // useEffect(()=>{
-    //     console.log(chat)
-    //     prevNumberOfSentMessages.current = sentMessages;
-    // });
-    //
-    // const hasNewMessage = () => {
-    //     if (selectedChat.chatId !== chat.chatId){
-    //         if(chat.latestMessage.isNewMessage){
-    //             return 'newMessage'
-    //         }
-    //     }else{
-    //         let chats = JSON.parse(window.sessionStorage.getItem('chatList'));
-    //         for (let i = 0; i < chats.length; i++) {
-    //             if(chats[i].chatId === chat.chatId){
-    //                 chats[i].latestMessage.isNewMessage = false
-    //             }
-    //         }
-    //         window.sessionStorage.setItem('chatList', JSON.stringify(chats));
-    //     }
-    // }
-    //
-    // const setSoundPlayed = () => {
-    //     let chats = JSON.parse(window.sessionStorage.getItem('chatList'));
-    //     for (let i = 0; i < chats.length; i++) {
-    //         if(chats[i].chatId === chat.chatId){
-    //             chats[i].latestMessage.hadSoundPlayed = true
-    //         }
-    //     }
-    //     window.sessionStorage.setItem('chatList', JSON.stringify(chats));
-    // }
-    //
-    // const sound = () => {
-    //     if(!chat.latestMessage.hadSoundPlayed){
-    //         console.log(chat.latestMessage)
-    //         setSoundPlayed();
-    //         return soundReceived
-    //     }
-    //     return null
-    // }
-    console.log(chat)
     const {firstName, lastName, latestMessage} = chat;
 
     return (
@@ -78,12 +38,15 @@ const ChatItem = ({chat, onSelect, selectedChat, sentMessages}) => {
                     </p>
                 }
             </div>
-            {
-                latestMessage &&
-                <p className={'chat-item__last-date'}>
-                    {dateToNecessaryFormat(latestMessage.date)}
-                </p>
-            }
+            <div className="chat-item__info">
+                {
+                    latestMessage &&
+                    <p className={'chat-item__last-date'}>
+                        {dateToNecessaryFormat(latestMessage.date)}
+                    </p>
+                }
+            </div>
+
 
         </div>
     )

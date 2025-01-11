@@ -28,8 +28,8 @@ const Messages = ({shouldRerenderMessages}) => {
 
     return messagesList.map(message => (
         (message.messageType === "SENT") ?
-            <MyMessage key={message.sendDateTime} message={message} /> :
-            <CompanionMessage key={message.sendDateTime} message={message} />
+            <MyMessage key={message.id} message={message} /> :
+            <CompanionMessage key={message.id} message={message} />
     ));
 };
 

@@ -26,10 +26,15 @@
 .user {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: $color-primary;
   padding: .5rem 1rem;
   border-bottom: $border-primary;
 
+  &__info{
+    display: flex;
+    align-items: center;
+  }
   @media only screen and (max-width: $width-middle) {
     padding: 1.5rem 2rem;
     justify-content: center;
@@ -83,6 +88,16 @@
       outline: none;
       color: $font-dark;
     }
+  }
+}
+
+.change-chat{
+  display: flex;
+  justify-self: flex-end;
+  & img {
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
   }
 }
 

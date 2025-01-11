@@ -1,14 +1,18 @@
 import {useDispatch, useSelector} from "react-redux";
 import {open as openSideBar} from "../../redux/slices/sideBarSlice";
 import {selectChat} from "../../redux/slices/selectedChatSlice";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Messages from "../messages/messages";
 import {randomJoke} from "../../chucknorisAPI";
-import './chat.scss';
 import user from '../../img/user.jpg';
 import {getChatMessages} from "../../api/chat";
 import {Send} from "@mui/icons-material";
 import {sendWebSocketMessage} from "../../services/webSocketService";
+import deleteIcon from "../../img/delete.svg";
+import editIcon from "../../img/pencil.svg";
+import './chat.scss';
+import UpdateChat from "../updateChat/updateChat";
+import {openForm} from "../../redux/slices/updateChatSlice";
 
 const sendMessageFunc = (messageText, chatId) => {
     const newMessage = {
@@ -21,9 +25,9 @@ const sendMessageFunc = (messageText, chatId) => {
 
 const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
-   const isSideBarOpen = useSelector(state => state.sideBar.isOpen);
-   const dispatch = useDispatch();
-
+    const isSideBarOpen = useSelector(state => state.sideBar.isOpen);
+    const dispatch = useDispatch();
+    const isUpdateFormOpen = useSelector(state => state.updateChat.isOpen)
     const onBackClick = () => {
         dispatch(openSideBar());
         dispatch(selectChat({chat: {}}));
@@ -56,7 +60,6 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
         }
     }
 
-    console.log(selectedChat.id)
     if (selectedChat.id) {
         const {firstName, lastName, latestMessage} = selectedChat;
 
@@ -64,13 +67,27 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
             <div className={className}>
                 <div className={'user'}>
                     {generateButton()}
-                    <div className={'user__img'}>
+                    <div className={'user__info'}>
                         <img src={user} alt="Companion" className="img"/>
-                        {/*{companionIsActive ? <CheckCircleOutlined className={'is-active'}/> : null}*/}
+                        <p className="user__name">
+                            {firstName + " " + (lastName ? lastName : "")}
+                        </p>
                     </div>
-                    <p className="user__name">
-                        {firstName + " " + (lastName ? lastName : "")}
-                    </p>
+                    <div className={"change-chat"}>
+                        <img src={editIcon}
+                             alt={"edit"}
+                             onClick={
+                                 () => dispatch(openForm())
+                             }/>
+                        <img src={deleteIcon}
+                             alt={"delete"}
+                             onClick={
+                                 (chatId) => {
+                                     console.log(selectedChat.id);
+                                 }
+                             }
+                        />
+                    </div>
                 </div>
                 <div className={"messages"}>
                     <Messages shouldRerenderMessages={shouldRerenderMessages}/>
@@ -83,8 +100,8 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
                         />
                         <Send className={'send'} onClick={(e) => onMessageSend(e)}/>
                     </form>
-
                 </div>
+                {isUpdateFormOpen && <UpdateChat/>}
             </div>
         )
     }
