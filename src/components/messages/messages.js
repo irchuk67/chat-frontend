@@ -1,42 +1,36 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Message from "../message/message";
-import {connect, useSelector} from "react-redux";
-import user from '../../img/user.jpg';
+import {useSelector} from "react-redux";
 import './messages.scss';
 import {getChatMessages} from "../../api/chat";
 
-const Messages = (props) => {
+const Messages = ({shouldRerenderMessages}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
     const [messagesList, setMessagesList] = useState([]);
 
     useEffect(() => {
         getChatMessages(selectedChat.id, localStorage.getItem('token'))
             .then(response => setMessagesList(response))
-    }, [selectedChat]);
+            .catch(error => console.error("Failed to fetch messages:", error));
+    }, [selectedChat, shouldRerenderMessages]);
 
+    const MyMessage = ({ message }) => (
+        <div className={'my-message'}>
+            <Message message={message} />
+        </div>
+    );
 
+    const CompanionMessage = ({ message }) => (
+        <div className={'not-my-message'}>
+            <Message message={message} />
+        </div>
+    );
 
-    return messagesList.map(message => {
-        const MyMessage = () => {
-            return(
-                <div className={'my-message'}>
-                    <Message message={message} />
-                </div>)
-        }
-        const CompanionMessage = () => {
-            return(
-                <div className={'not-my-message'}>
-                    <Message message={message}/>
-                </div>
-            )
-        }
-
-        return (
-            (message.messageType === "SENT") ?  <MyMessage key={message.sendDateTime}/> : <CompanionMessage key={message.sendDateTime}/>
-        )
-    });
-
-
-}
+    return messagesList.map(message => (
+        (message.messageType === "SENT") ?
+            <MyMessage key={message.sendDateTime} message={message} /> :
+            <CompanionMessage key={message.sendDateTime} message={message} />
+    ));
+};
 
 export default Messages;

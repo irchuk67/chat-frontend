@@ -7,52 +7,19 @@ import {randomJoke} from "../../chucknorisAPI";
 import './chat.scss';
 import user from '../../img/user.jpg';
 import {getChatMessages} from "../../api/chat";
+import {Send} from "@mui/icons-material";
+import {sendWebSocketMessage} from "../../services/webSocketService";
 
-const transformDate = (date) => {
-    const howToWriteNumber = (number) => {
-        return number < 10 ? `0${number}` : number
-    }
-    return howToWriteNumber(date.getMonth() + 1)
-        + '/'
-        + howToWriteNumber(date.getDate())
-        + '/'
-        + howToWriteNumber(date.getFullYear())
-        + ' '
-        + howToWriteNumber(date.getHours())
-        + ':'
-        + howToWriteNumber(date.getMinutes())
-        + ':'
-        + howToWriteNumber(date.getSeconds())
-}
-
-const sendMessageFunc = (sendNewMessage, messageText, chatId, isMyMessage, isNewMessage, soundPlayed) => {
-    const date = new Date();
-    const formattedDate = transformDate(date);
+const sendMessageFunc = (messageText, chatId) => {
     const newMessage = {
-        text: messageText,
-        sendDatetime: formattedDate,
-        isMyMessage: isMyMessage,
-        isNewMessage: isNewMessage,
-        hadSoundPlayed: soundPlayed
+        content: messageText,
+        chatId: chatId,
     }
 
-    let chats = JSON.parse(window.sessionStorage.getItem('chatList'));
-    for (let i = 0; i < chats.length; i++) {
-        if (chats[i].chatId === chatId) {
-            chats[i].latestMessage = {
-                text: messageText,
-                date: formattedDate,
-                isNewMessage: isNewMessage,
-                hadSoundPlayed: soundPlayed
-            }
-        }
-    }
-    window.sessionStorage.setItem('chatList', JSON.stringify(chats));
-    window.sessionStorage.setItem(chatId, JSON.stringify([...JSON.parse(window.sessionStorage.getItem(chatId)), newMessage]))
-    sendNewMessage();
+    sendWebSocketMessage(JSON.stringify(newMessage));
 }
 
-const Chat = () => {
+const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
    const isSideBarOpen = useSelector(state => state.sideBar.isOpen);
    const dispatch = useDispatch();
@@ -83,17 +50,10 @@ const Chat = () => {
         e.preventDefault();
 
         if (messageText) {
-            // sendMessageFunc(dispatch(addMessage), messageText, selectedChat.chatId, true, false, true);
-            // setMessageText('')
+            sendMessageFunc(messageText, selectedChat.id);
+            setMessageText('');
+            handleRenderMessages()
         }
-
-        setTimeout(() => randomJoke().then(res => {
-            if (res.value) {
-                // sendMessageFunc(dispatch(addMessage), res.value, selectedChat.chatId, false, true, false)
-            }
-
-
-        }), Math.random() * 5000 + 10000)
     }
 
     console.log(selectedChat.id)
@@ -113,7 +73,7 @@ const Chat = () => {
                     </p>
                 </div>
                 <div className={"messages"}>
-                    <Messages/>
+                    <Messages shouldRerenderMessages={shouldRerenderMessages}/>
                 </div>
                 <div className="write-field">
                     <form onSubmit={(e) => onMessageSend(e)}>
@@ -121,7 +81,7 @@ const Chat = () => {
                                value={messageText}
                                onChange={event => onMessageChange(event)}
                         />
-                        {/*<Send className={'send'} onClick={(e) => onMessageSend(e)}/>*/}
+                        <Send className={'send'} onClick={(e) => onMessageSend(e)}/>
                     </form>
 
                 </div>

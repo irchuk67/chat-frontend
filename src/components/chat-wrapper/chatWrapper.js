@@ -10,6 +10,7 @@ import {submitUser} from "../../api/chat";
 import './chatWrapper.scss';
 
 const ChatWrapper = (props) => {
+    const [shouldRerenderMessages, setShouldRerenderMessages] = useState(false);
     const [isWebSocketReady, setIsWebSocketReady] = useState(false);
     const dispatch = useDispatch();
     const {isLoading, error, sessionId} = useSelector((state) => state.webSocket);
@@ -26,6 +27,10 @@ const ChatWrapper = (props) => {
 
     }, []);
 
+    const handleRenderMessages = () => {
+        setShouldRerenderMessages(prevState => !prevState);
+    }
+
     useEffect(() => {
         console.log(sessionId)
         if (sessionId){
@@ -33,10 +38,25 @@ const ChatWrapper = (props) => {
         }
     }, [isWebSocketReady]);
 
+    const isObject = (data) => {
+        try {
+            JSON.parse(data);
+            return true;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleWebSocketMessage = (data) => {
         console.log('Set sessionId' + (data && typeof data === 'string'));
-        setIsWebSocketReady(true);
-        dispatch(setSessionId(data));
+        if (data && !isObject(data)) {
+            console.log('Set sessionId');
+            setIsWebSocketReady(true);
+            dispatch(setSessionId(data));
+        }else{
+            console.log("Add message ", data);
+            handleRenderMessages();
+        }
     };
 
     const handleWebSocketClose = () => {
@@ -52,7 +72,8 @@ const ChatWrapper = (props) => {
             return (
                 <>
                     <Sidebar />
-                    <Chat />
+                    <Chat shouldRerenderMessages={shouldRerenderMessages}
+                          handleRenderMessages={handleRenderMessages} />
                 </>
             );
 
