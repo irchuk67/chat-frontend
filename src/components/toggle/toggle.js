@@ -12,7 +12,7 @@ const Toggle = ({ label, handleClick }) => {
     };
 
     return (
-        <div className="toggle-container" onClick={handleToggle}>
+        <div className="toggle-container" onClick={() => handleToggle()}>
             {label && <span className="toggle-label">{isOn ? `${label}: On` : `${label}: Off`}</span>}
 
             <div className={`toggle-switch ${isOn ? 'on' : ''}`}>
