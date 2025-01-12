@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Message from "../message/message";
 import {useDispatch, useSelector} from "react-redux";
-import './messages.scss';
 import {getChatMessages} from "../../api/chat";
 import {sendWebSocketMessage} from "../../services/webSocketService";
 import {selectChat} from "../../redux/slices/selectedChatSlice";
+import './messages.scss';
 
 const Messages = ({shouldRerenderMessages, handleRenderMessages, setMessageId, setUpdate, setMessageText}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);

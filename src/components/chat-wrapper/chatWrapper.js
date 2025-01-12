@@ -20,7 +20,7 @@ const ChatWrapper = () => {
     useEffect(() => {
         try {
             connectWebSocket(
-                "ws://localhost:8000/chat",
+                "ws://chat-447512.lm.r.appspot.com/chat",
                 handleWebSocketMessage,
                 handleWebSocketClose
             );
