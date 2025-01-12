@@ -1,8 +1,5 @@
 import React from "react";
 import './App.scss';
-import Sidebar from "./components/sidebar/sidebar";
-import {useSelector} from "react-redux";
-import Chat from "./components/chat/chat";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import LogIn from "./components/login/logIn";
