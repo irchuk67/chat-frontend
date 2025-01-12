@@ -8,6 +8,7 @@ import {webSocketSlice} from "./slices/webSocketSlice";
 import {searchTermSlice} from "./slices/searchTermSlice";
 import {addChatSlice} from "./slices/addChatSlice";
 import {updateChatSlice} from "./slices/updateChatSlice";
+import {deleteChatSlice} from "./slices/deleteSlice";
 
 const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
         searchTerm: searchTermSlice.reducer,
         addChat: addChatSlice.reducer,
         updateChat: updateChatSlice.reducer,
+        deleteChat: deleteChatSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

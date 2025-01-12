@@ -13,6 +13,8 @@ import editIcon from "../../img/pencil.svg";
 import './chat.scss';
 import UpdateChat from "../updateChat/updateChat";
 import {openForm} from "../../redux/slices/updateChatSlice";
+import {openForm as openDeleteForm} from "../../redux/slices/deleteSlice";
+import DeleteConfirmation from "../deleteConfirmation/deleteConfirmation";
 
 const sendMessageFunc = (messageText, chatId) => {
     const newMessage = {
@@ -27,7 +29,8 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
     const isSideBarOpen = useSelector(state => state.sideBar.isOpen);
     const dispatch = useDispatch();
-    const isUpdateFormOpen = useSelector(state => state.updateChat.isOpen)
+    const isUpdateFormOpen = useSelector(state => state.updateChat.isOpen);
+    const isDeleteOpen = useSelector(state => state.deleteChat.isOpen);
     const onBackClick = () => {
         dispatch(openSideBar());
         dispatch(selectChat({chat: {}}));
@@ -83,7 +86,7 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
                              alt={"delete"}
                              onClick={
                                  (chatId) => {
-                                     console.log(selectedChat.id);
+                                     dispatch(openDeleteForm())
                                  }
                              }
                         />
@@ -102,6 +105,7 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
                     </form>
                 </div>
                 {isUpdateFormOpen && <UpdateChat/>}
+                {isDeleteOpen && <DeleteConfirmation/>}
             </div>
         )
     }

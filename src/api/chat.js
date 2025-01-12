@@ -25,7 +25,7 @@ const getAllChats = (token, searchTerm) => ChatApi.get("/chats", {
     }
 }).then(response => response.data);
 
-const getChat = (chatId, token) => ChatApi.get(`/chats/${chatId}`,
+const deleteChat = (chatId, token) => ChatApi.delete(`/chats/${chatId}`,
     {
         headers: {
             Authorization: `Bearer ${token}`
@@ -61,4 +61,4 @@ const getChatMessages = (chatId, token) => ChatApi.get(`/chats/${chatId}/message
     }
 }).then(response => response.data);
 
-export {submitUser, getAllChats, getChatMessages, addChat, updateChat, getChat};
+export {submitUser, getAllChats, getChatMessages, addChat, updateChat, deleteChat};

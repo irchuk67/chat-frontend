@@ -43,6 +43,7 @@ const ChatForm = ({isFormOpen, title, handleSubmit, firstName = "", lastName = "
                         name="lastName"
                         style={{width: "100%", padding: "8px"}}
                         value={lastNameValue}
+                        required
                         onChange={handleLastNameChange}
                         className={'form__field--input'}
                     />
