@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = 'https://chat-447512.lm.r.appspot.com/api/';
+const baseURL = 'https://chat-backend-811479879975.europe-central2.run.app/api/';
 
 const ChatApi = axios.create({
     baseURL
