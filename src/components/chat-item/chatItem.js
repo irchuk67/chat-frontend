@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {connect} from "react-redux";
 import user from '../../img/user.jpg';
-import deleteIcon from '../../img/delete.svg';
 import './chatItem.scss'
 
 const dateToNecessaryFormat = (currentDate) => {

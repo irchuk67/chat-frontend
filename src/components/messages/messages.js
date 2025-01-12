@@ -6,7 +6,7 @@ import {getChatMessages} from "../../api/chat";
 import {sendWebSocketMessage} from "../../services/webSocketService";
 import {selectChat} from "../../redux/slices/selectedChatSlice";
 
-const Messages = ({shouldRerenderMessages, handleRenderMessages}) => {
+const Messages = ({shouldRerenderMessages, handleRenderMessages, setMessageId, setUpdate, setMessageText}) => {
     const selectedChat = useSelector(state => state.selectedChat.chat);
     const [messagesList, setMessagesList] = useState([]);
     const dispatch = useDispatch();
@@ -35,13 +35,19 @@ const Messages = ({shouldRerenderMessages, handleRenderMessages}) => {
 
     const MyMessage = ({message}) => (
         <div className={'my-message'}>
-            <Message message={message}/>
+            <Message message={message}
+                     canEdit={true}
+                     handleRenderMessages={handleRenderMessages}
+                     setMessageText={setMessageText}
+                     setUpdate={setUpdate}
+                     setMessageId={setMessageId}
+            />
         </div>
     );
 
     const CompanionMessage = ({message}) => (
         <div className={'not-my-message'}>
-            <Message message={message}/>
+            <Message message={message} handleRenderMessages={handleRenderMessages} />
         </div>
     );
 

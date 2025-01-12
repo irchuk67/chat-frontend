@@ -5,13 +5,9 @@ import Sidebar from "./components/sidebar/sidebar";
 import Chat from "./components/chat/chat";
 import {ToastProvider} from "./components/toast/toastContainer";
 
-const ProtectedRoute = ({ element }) => {
+const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem("token");
-    if (token) {
-        return <ToastProvider>{element}</ToastProvider>;
-    } else {
-        return null;
-    }
+    return token ? <ToastProvider>{children}</ToastProvider> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

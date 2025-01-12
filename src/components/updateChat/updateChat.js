@@ -15,9 +15,20 @@ const UpdateChat = () => {
     const onSubmit = (formData) => {
         updateChat(id, localStorage.getItem("token"), formData.firstName, formData.lastName)
             .then(() => {
-                dispatch(fetchChats({token: localStorage.getItem('token'), searchTerm}))
-                dispatch(selectChat(chats.data.filter(chat => chat.id === id)[0]));
-            });
+                dispatch(fetchChats({ token: localStorage.getItem("token"), searchTerm })).then(
+                    (action) => {
+                        const updatedChats = action.payload; // Assuming `fetchChats` returns the chats list
+                        const updatedChat = updatedChats.find((chat) => chat.id === id);
+                        if (updatedChat) {
+                            dispatch(selectChat(updatedChat));
+                        }
+                        dispatch(closeForm());
+                    }
+                );
+            }).catch((error) => {
+            console.error("Failed to update chat:", error);
+            alert("An error occurred while updating the chat.");
+        });;
     }
 
     return <ChatForm isFormOpen={isOpen}

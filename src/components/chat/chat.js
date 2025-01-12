@@ -3,18 +3,17 @@ import {open as openSideBar} from "../../redux/slices/sideBarSlice";
 import {selectChat} from "../../redux/slices/selectedChatSlice";
 import React, {useEffect, useState} from "react";
 import Messages from "../messages/messages";
-import {randomJoke} from "../../chucknorisAPI";
 import user from '../../img/user.jpg';
-import {getChatMessages} from "../../api/chat";
+import {updateChatMessage} from "../../api/chat";
 import {Send} from "@mui/icons-material";
 import {sendWebSocketMessage} from "../../services/webSocketService";
 import deleteIcon from "../../img/delete.svg";
 import editIcon from "../../img/pencil.svg";
-import './chat.scss';
 import UpdateChat from "../updateChat/updateChat";
 import {openForm} from "../../redux/slices/updateChatSlice";
 import {openForm as openDeleteForm} from "../../redux/slices/deleteSlice";
 import DeleteConfirmation from "../deleteConfirmation/deleteConfirmation";
+import './chat.scss';
 
 const sendMessageFunc = (messageText, chatId) => {
     const newMessage = {
@@ -34,6 +33,8 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
     const dispatch = useDispatch();
     const isUpdateFormOpen = useSelector(state => state.updateChat.isOpen);
     const isDeleteOpen = useSelector(state => state.deleteChat.isOpen);
+    const [update, setUpdate] = useState(false);
+    const [messageId, setMessageId] = useState("");
 
     const onBackClick = () => {
         dispatch(openSideBar());
@@ -61,7 +62,11 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
         e.preventDefault();
 
         if (messageText) {
-            sendMessageFunc(messageText, selectedChat.id);
+            if (update){
+                updateChatMessage(selectedChat.id, messageId, messageText, localStorage.getItem("token"))
+            }else{
+                sendMessageFunc(messageText, selectedChat.id);
+            }
             setMessageText('');
             handleRenderMessages()
         }
@@ -97,7 +102,7 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
                     </div>
                 </div>
                 <div className={"messages"}>
-                    <Messages shouldRerenderMessages={shouldRerenderMessages} handleRenderMessages={handleRenderMessages}/>
+                    <Messages setUpdate={setUpdate} setMessageText={setMessageText} setMessageId={setMessageId} handleRenderMessages={handleRenderMessages} shouldRerenderMessages={shouldRerenderMessages}/>
                 </div>
                 <div className="write-field">
                     <form onSubmit={(e) => onMessageSend(e)}>

@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import userChats from '../../userChats.json';
 
 const initialState = {
     isOpen: true

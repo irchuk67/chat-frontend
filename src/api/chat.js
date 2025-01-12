@@ -26,7 +26,7 @@ const manageRandomMessagesSending = (send, token) => ChatApi.patch("/users",
             sendRandomMessages: send
         }
     }
-    )
+)
 
 const getAllChats = (token, searchTerm) => ChatApi.get("/chats", {
     headers: {
@@ -71,6 +71,33 @@ const getChatMessages = (chatId, token) => ChatApi.get(`/chats/${chatId}/message
     headers: {
         Authorization: `Bearer ${token}`
     }
-}).then(response => response.data);
+}).then(response => response.data)
 
-export {submitUser, getAllChats, getChatMessages, addChat, updateChat, deleteChat, manageRandomMessagesSending};
+const deleteChatMessage = (chatId, messageId, token) => ChatApi.delete(`/chats/${chatId}/messages/${messageId}`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+
+const updateChatMessage = (chatId, messageId, messageContent, token) => ChatApi.put(`/chats/${chatId}/messages/${messageId}`,
+    {
+        content: messageContent,
+    },
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+
+export {
+    submitUser,
+    getAllChats,
+    getChatMessages,
+    addChat,
+    updateChat,
+    deleteChat,
+    deleteChatMessage,
+    manageRandomMessagesSending,
+    updateChatMessage
+};

@@ -6,9 +6,8 @@ import {Navigate} from "react-router-dom";
 
 const LogIn = (props) => {
     const signedUser = useSelector((state) => state.user);
-    const storedUser = localStorage.getItem('signed_user');
-    const user = storedUser ? JSON.parse(storedUser) : signedUser;
-    if (!user.isSignedIn){
+    const token = localStorage.getItem('token');
+    if (!token){
         return (
             <div className={'log-in'}>
                 <div className="log-in__content">
@@ -20,7 +19,7 @@ const LogIn = (props) => {
             </div>
         )
     }else {
-        return null
+        return <Navigate to={'/chat'}/>
     }
 
 }

@@ -3,13 +3,19 @@
 .message{
   display: flex;
   &__content{
-    flex: 0 1 100%;
+    max-width: 75%;
   }
   &__notification{
     background-color: $color-primary;
-    border-radius: 3rem;
+    border-radius: .5rem;
     padding: 1.5rem 2rem;
     width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    & > img {
+      align-self: flex-end;
+    }
   }
   &__text{
     font-size: 1.2rem;
@@ -18,6 +24,12 @@
   &__date{
     color: $font-primary;
     text-align: end;
+  }
+
+  &__change{
+    & img{
+      width: 1.75rem;
+    }
   }
 }
 

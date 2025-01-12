@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import userChats from '../../userChats.json';
 import {getAllChats} from "../../api/chat";
 
 const initialState = {
