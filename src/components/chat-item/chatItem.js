@@ -22,7 +22,7 @@ const ChatItem = ({chat, onSelect, selectedChat, sentMessages}) => {
         // <div className={`chat-item ${hasNewMessage()}`}
         //      onClick={onSelect}
         // >
-        <div className={'chat-item'} onClick={onSelect}>
+        <div className={'chat-item' + " " + ((chat.unreadMessagesCount > 0 && selectedChat.id !== chat.id) && "chat-item__unread")} onClick={onSelect}>
             {/*{prevNumberOfSentMessages.current < sentMessages ? <audio autoPlay={true} src={sound()}/> : null }*/}
             <div>
                 <img src={user} alt="Companion" className="img"/>
@@ -43,6 +43,13 @@ const ChatItem = ({chat, onSelect, selectedChat, sentMessages}) => {
                     latestMessage &&
                     <p className={'chat-item__last-date'}>
                         {dateToNecessaryFormat(latestMessage.date)}
+                    </p>
+                }
+                {
+                    (chat.unreadMessagesCount > 0 && selectedChat.id !== chat.id)
+                    &&
+                    <p className={'chat-item__unread-messages'}>
+                        {chat.unreadMessagesCount}
                     </p>
                 }
             </div>

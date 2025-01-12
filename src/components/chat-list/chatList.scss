@@ -19,7 +19,7 @@
     transition: all, .2s;
 
     &:hover{
-      background-color: $font-dark;
+      background-color: darken($font-primary, 10%);
       color: $font-light;
     }
   }

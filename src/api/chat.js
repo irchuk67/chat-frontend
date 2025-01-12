@@ -16,6 +16,18 @@ const submitUser = (sessionId, token) => ChatApi.post("/users",
         }
     }).then(response => response.data);
 
+const manageRandomMessagesSending = (send, token) => ChatApi.patch("/users",
+    {},
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            sendRandomMessages: send
+        }
+    }
+    )
+
 const getAllChats = (token, searchTerm) => ChatApi.get("/chats", {
     headers: {
         Authorization: `Bearer ${token}`
@@ -61,4 +73,4 @@ const getChatMessages = (chatId, token) => ChatApi.get(`/chats/${chatId}/message
     }
 }).then(response => response.data);
 
-export {submitUser, getAllChats, getChatMessages, addChat, updateChat, deleteChat};
+export {submitUser, getAllChats, getChatMessages, addChat, updateChat, deleteChat, manageRandomMessagesSending};

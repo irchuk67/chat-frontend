@@ -1,42 +1,45 @@
 import Sidebar from "../sidebar/sidebar";
 import Chat from "../chat/chat";
-import React, {useEffect, useState} from "react";
-import {connectWebSocket, disconnectWebSocket} from "../../services/webSocketService";
-import {useDispatch, useSelector} from "react-redux";
-import {closeSocket, setError, setSessionId} from "../../redux/slices/webSocketSlice";
-import ErrorMessage from "../errorMessage/errorMessage";
-import Loading from "../loading/loading";
-import {submitUser} from "../../api/chat";
+import React, { useEffect, useState } from "react";
+import { connectWebSocket, disconnectWebSocket } from "../../services/webSocketService";
+import { useDispatch, useSelector } from "react-redux";
+import { closeSocket, setError, setSessionId } from "../../redux/slices/webSocketSlice";
+import { submitUser } from "../../api/chat";
 import './chatWrapper.scss';
+import { useToast } from "../toast/toastContainer";
+import {setSendRandomMessages} from "../../redux/slices/sendRandomMessagesSlice";
 
-const ChatWrapper = (props) => {
+const ChatWrapper = () => {
     const [shouldRerenderMessages, setShouldRerenderMessages] = useState(false);
     const [isWebSocketReady, setIsWebSocketReady] = useState(false);
+    const [sessionId, setSessionId] = useState(false);
     const dispatch = useDispatch();
-    const {isLoading, error, sessionId} = useSelector((state) => state.webSocket);
+    const { addToast } = useToast();
+    const chats = useSelector(state => state.chats);
+
     useEffect(() => {
         try {
             connectWebSocket(
-                'ws://localhost:8000/chat',
+                "ws://localhost:8000/chat",
                 handleWebSocketMessage,
-                handleWebSocketClose,
+                handleWebSocketClose
             );
         } catch (e) {
             dispatch(setError(e));
         }
-
     }, []);
 
     const handleRenderMessages = () => {
-        setShouldRerenderMessages(prevState => !prevState);
-    }
+        setShouldRerenderMessages((prevState) => !prevState);
+    };
 
     useEffect(() => {
-        console.log(sessionId)
-        if (sessionId){
+        console.log(sessionId);
+        if (sessionId) {
             submitUser(sessionId, localStorage.getItem("token"))
+                .then(res => dispatch(setSendRandomMessages(res.sendRandomMessages)));
         }
-    }, [isWebSocketReady]);
+    }, [sessionId]);
 
     const isObject = (data) => {
         try {
@@ -48,13 +51,15 @@ const ChatWrapper = (props) => {
     };
 
     const handleWebSocketMessage = (data) => {
-        console.log('Set sessionId' + (data && typeof data === 'string'));
+        console.log("Set sessionId" + (data && typeof data === "string"));
         if (data && !isObject(data)) {
-            console.log('Set sessionId');
+            console.log("Set sessionId");
             setIsWebSocketReady(true);
-            dispatch(setSessionId(data));
-        }else{
+            setSessionId(data);
+        } else {
             console.log("Add message ", data);
+            const message = JSON.parse(data);
+            addToast(message.content,  message.firstName, message.lastName);
             handleRenderMessages();
         }
     };
@@ -64,29 +69,22 @@ const ChatWrapper = (props) => {
     };
 
     const displayMainPart = () => {
-        if (isLoading && !error && !sessionId) {
-            return <Loading/>;
-        } else if (error !== '' && !isLoading && !sessionId) {
-            return <ErrorMessage message={error}/>;
-        } else {
-            return (
-                <>
-                    <Sidebar shouldRerenderMessages={shouldRerenderMessages}/>
-                    <Chat shouldRerenderMessages={shouldRerenderMessages}
-                          handleRenderMessages={handleRenderMessages} />
-                </>
-            );
+        return (
+            <>
+                <Sidebar shouldRerenderMessages={shouldRerenderMessages} />
+                <Chat
+                    shouldRerenderMessages={shouldRerenderMessages}
+                    handleRenderMessages={handleRenderMessages}
+                />
+            </>
+        );
+    };
 
-        }
-
-    }
     return (
         <div className="chat-wrapper">
-            {
-                displayMainPart()
-            }
+            {displayMainPart()}
         </div>
-    )
-}
+    );
+};
 
 export default ChatWrapper;

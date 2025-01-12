@@ -16,7 +16,7 @@ const UpdateChat = () => {
         updateChat(id, localStorage.getItem("token"), formData.firstName, formData.lastName)
             .then(() => {
                 dispatch(fetchChats({token: localStorage.getItem('token'), searchTerm}))
-                dispatch(selectChat(chats.data.filter(chat => chat.id === id)));
+                dispatch(selectChat(chats.data.filter(chat => chat.id === id)[0]));
             });
     }
 

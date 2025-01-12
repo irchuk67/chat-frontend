@@ -1,0 +1,18 @@
+@import "src/base";
+
+.log-out{
+  &__btn{
+    border: none;
+    padding: .5rem;
+    background-color: $font-primary;
+    border-radius: .5rem;
+    &:hover{
+      background-color: darken($font-primary, 10%);
+    }
+  }
+
+  &__icon{
+    width: 2rem;
+    height: 1.5rem;
+  }
+}

@@ -9,6 +9,7 @@ import {searchTermSlice} from "./slices/searchTermSlice";
 import {addChatSlice} from "./slices/addChatSlice";
 import {updateChatSlice} from "./slices/updateChatSlice";
 import {deleteChatSlice} from "./slices/deleteSlice";
+import {sendRandomMessagesSlice} from "./slices/sendRandomMessagesSlice";
 
 const store = configureStore({
     reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
         addChat: addChatSlice.reducer,
         updateChat: updateChatSlice.reducer,
         deleteChat: deleteChatSlice.reducer,
+        sendRandomMessages: sendRandomMessagesSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

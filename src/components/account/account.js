@@ -1,6 +1,8 @@
 import React from "react";
 import accountPhoto from '../../img/user.jpg';
+import GoogleAuth from "../login/GoogleAuth";
 import './account.scss';
+import Toggle from "../toggle/toggle";
 
 const Account = () => {
     return(
@@ -10,11 +12,10 @@ const Account = () => {
                      src={accountPhoto}
                      className={'img'}
                 />
-                {/*<CheckCircleOutline className={'is-active'}/>*/}
             </div>
-            {/*<div className={'account__sign-out'}>*/}
-            {/*    <GoogleAuth/>*/}
-            {/*</div>*/}
+            <div className={'account__sign-out'}>
+                <GoogleAuth/>
+            </div>
         </div>
 
     )

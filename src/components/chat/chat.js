@@ -18,8 +18,11 @@ import DeleteConfirmation from "../deleteConfirmation/deleteConfirmation";
 
 const sendMessageFunc = (messageText, chatId) => {
     const newMessage = {
-        content: messageText,
-        chatId: chatId,
+        type: "NEW_MESSAGE",
+        message: {
+            content: messageText,
+            chatId: chatId,
+        },
     }
 
     sendWebSocketMessage(JSON.stringify(newMessage));
@@ -31,6 +34,7 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
     const dispatch = useDispatch();
     const isUpdateFormOpen = useSelector(state => state.updateChat.isOpen);
     const isDeleteOpen = useSelector(state => state.deleteChat.isOpen);
+
     const onBackClick = () => {
         dispatch(openSideBar());
         dispatch(selectChat({chat: {}}));
@@ -93,7 +97,7 @@ const Chat = ({shouldRerenderMessages, handleRenderMessages}) => {
                     </div>
                 </div>
                 <div className={"messages"}>
-                    <Messages shouldRerenderMessages={shouldRerenderMessages}/>
+                    <Messages shouldRerenderMessages={shouldRerenderMessages} handleRenderMessages={handleRenderMessages}/>
                 </div>
                 <div className="write-field">
                     <form onSubmit={(e) => onMessageSend(e)}>

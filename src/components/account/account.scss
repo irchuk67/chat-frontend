@@ -1,11 +1,11 @@
 @import '../../base';
 
 .account{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: $color-primary;
   padding: .5rem 1rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
   &__user::after{
     content: '';
     position: absolute;
@@ -17,5 +17,9 @@
     background-repeat: no-repeat;
     background-size: cover;
     stroke: green;
+  }
+  &__left{
+    display: flex;
+
   }
 }
